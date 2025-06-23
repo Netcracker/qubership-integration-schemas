@@ -9,7 +9,7 @@ on:
       scope:
         required: false
         type: string
-        default: "@netcracker"
+        default: "@andyroode"
       node-version:
         required: true
         type: string
