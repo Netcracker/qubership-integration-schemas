@@ -111,7 +111,7 @@ jobs:
         run: npm test --if-present
 
       - name: Commit and Push changes
-        uses: ./actions/commit-and-push
+        uses: ./.github/actions/commit-and-push
         with:
           branch_name: ${{ inputs.branch_name }}
 
