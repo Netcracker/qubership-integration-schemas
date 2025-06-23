@@ -13,6 +13,7 @@ on:
       node-version:
         required: true
         type: string
+        default: "22.x"
       registry-url:
         required: false
         type: string
