@@ -41,3 +41,15 @@ index ece78ed..21dd54b 100644
    "type": "module",
    "license": "Apache-2.0",
    "description": "Schemas definition for QIP",
+diff --git a/package.json b/package.json
+index b85e42d..87082df 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "@andyroode/qip-schemas",
+-  "version": "0.0.2",
++  "version": "0.0.1",
+   "type": "module",
+   "license": "Apache-2.0",
+   "description": "Schemas definition for QIP",
