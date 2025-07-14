@@ -23,26 +23,17 @@
 
 name: Maven release
 
-run-name: ${{ github.event.inputs.version-type }} release for ${{ github.event.repository.name }}
-
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version-type:
         description: 'Version type to release'
-        type: choice
-        options:
-          - 'major'
-          - 'minor'
-          - 'patch'
+        type: string
         required: true
         default: 'patch'
       profile:
         description: 'Maven profile to use'
-        type: choice
-        options:
-          - 'github'
-          - 'central'
+        type: string
         required: false
         default: 'central'
       mvn-args:
@@ -67,15 +58,15 @@ jobs:
       - name: "Build and Publish current SNAPSHOT (dry run)"
         uses: netcracker/qubership-workflow-hub/actions/maven-release@v1.0.3
         with:
-          version-type: ${{ github.event.inputs.version-type }}
+          version-type: ${{ github.event.inputs.version-type || inputs.version-type }}
           ref: ${{ github.ref }}
           module: ${{ github.event.repository.name }}
-          maven-args: ${{ inputs.mvn-args }}
-          profile: ${{ inputs.profile }}
-          server-id: ${{ inputs.profile }}
+          maven-args: ${{ github.event.inputs.mvn-args || inputs.mvn-args }}
+          profile: ${{ github.event.inputs.profile || inputs.profile }}
+          server-id: ${{ github.event.inputs.profile || inputs.profile }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          maven-user: ${{ inputs.profile == 'github' && github.actor || secrets.MAVEN_USER }}
-          maven-password: ${{ inputs.profile == 'github' && secrets.GITHUB_TOKEN || secrets.MAVEN_PASSWORD }}
+          maven-user: ${{ (github.event.inputs.profile || inputs.profile) == 'github' && github.actor || secrets.MAVEN_USER }}
+          maven-password: ${{ (github.event.inputs.profile || inputs.profile) == 'github' && secrets.GITHUB_TOKEN || secrets.MAVEN_PASSWORD }}
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           dry-run: 'true'
@@ -99,20 +90,20 @@ jobs:
 
         uses: netcracker/qubership-workflow-hub/actions/maven-release@v1.0.3
         with:
-          version-type: ${{ github.event.inputs.version-type }}
+          version-type: ${{ github.event.inputs.version-type || inputs.version-type }}
           ref: ${{ github.ref }}
           module: ${{ github.event.repository.name }}
-          maven-args: ${{ inputs.mvn-args }}
-          profile: ${{ inputs.profile }}
-          server-id: ${{ inputs.profile }}
+          maven-args: ${{ github.event.inputs.mvn-args || inputs.mvn-args }}
+          profile: ${{ github.event.inputs.profile || inputs.profile }}
+          server-id: ${{ github.event.inputs.profile || inputs.profile }}
           token: ${{ steps.app-token.outputs.token }} # It can be ${{ secrets.GITHUB_TOKEN }} if default branch isn't protected
-          maven-user: ${{ inputs.profile == 'github' && github.actor || secrets.MAVEN_USER }}
-          maven-password: ${{ inputs.profile == 'github' && secrets.GITHUB_TOKEN || secrets.MAVEN_PASSWORD }}
+          maven-user: ${{ (github.event.inputs.profile || inputs.profile) == 'github' && github.actor || secrets.MAVEN_USER }}
+          maven-password: ${{ (github.event.inputs.profile || inputs.profile) == 'github' && secrets.GITHUB_TOKEN || secrets.MAVEN_PASSWORD }}
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           dry-run: 'false'
   check-dockerfile:
-    if: ${{ github.event.inputs.build-docker == 'true' }}
+    if: ${{ (github.event.inputs.build-docker || inputs.build-docker) == 'true' }}
     runs-on: ubuntu-latest
     needs: [deploy]
     outputs:
@@ -134,7 +125,7 @@ jobs:
 
   docker-build-publish:
     needs: [deploy, check-dockerfile]
-    if: ${{ github.event.inputs.build-docker == 'true' && needs.check-dockerfile.outputs.dockerfile_exists == 'exists' }}
+    if: ${{ (github.event.inputs.build-docker || inputs.build-docker) == 'true' && needs.check-dockerfile.outputs.dockerfile_exists == 'exists' }}
     uses: netcracker/qubership-workflow-hub/.github/workflows/docker-publish.yml@v1.0.3
     with:
       ref: "v${{ needs.deploy.outputs.release-version }}"

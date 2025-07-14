@@ -1,7 +1,7 @@
 name: Reusable NPM Publish
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
         required: true
@@ -9,9 +9,9 @@ on:
       scope:
         required: false
         type: string
-        default: "@andyroode"
+        default: "@netcracker"
       node-version:
-        required: true
+        required: false
         type: string
         default: "22.x"
       registry-url:
@@ -34,7 +34,7 @@ on:
 
 permissions:
   contents: write
-  packages: write        
+  packages: write
 
 jobs:
   npm-build-publish:

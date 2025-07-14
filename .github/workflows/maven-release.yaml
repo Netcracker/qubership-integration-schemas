@@ -19,6 +19,7 @@
 name: Release And Deploy Maven Artifact
 
 on:
+  workflow_call:
   workflow_dispatch:
     inputs:
       version:
