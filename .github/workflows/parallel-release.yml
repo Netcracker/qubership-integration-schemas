@@ -51,14 +51,14 @@ permissions:
 
 jobs:
   maven-release:
-    if: ${{ inputs.maven-release == 'true' }}
+    if: ${{ inputs.maven-release && inputs.maven-release != 'false' }}
     uses: ./.github/workflows/maven-release-v2.yaml
     with:
       version-type: ${{ inputs.version-type }}
       profile: ${{ inputs.maven-profile }}
 
   npm-publish:
-    if: ${{ inputs.npm-publish == 'true' }}
+    if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
     uses: ./.github/workflows/npm-publish.yml
     with:
       version: ${{ inputs.version }}
