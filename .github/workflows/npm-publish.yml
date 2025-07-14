@@ -49,6 +49,13 @@ jobs:
       - name: Show branch
         run: echo "Branch= ${{ github.event.inputs.branch_name }}"
 
+      - name: Debug inputs
+        run: |
+          echo "Scope: ${{ inputs.scope }}"
+          echo "Registry URL: ${{ inputs.registry-url }}"
+          echo "Version: ${{ inputs.version }}"
+          echo "Dist tag: ${{ inputs.dist-tag }}"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
