@@ -1,4 +1,6 @@
-name: Parallel Release
+name: Maven & NPM Release
+
+run-name: Maven ${{ inputs.maven-version-type }} & NPM ${{ inputs.npm-version || 'auto' }} Release
 
 on:
   workflow_dispatch:
