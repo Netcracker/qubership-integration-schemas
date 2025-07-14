@@ -30,7 +30,6 @@ on:
         description: 'Version type to release'
         type: string
         required: true
-        default: 'patch'
       profile:
         description: 'Maven profile to use'
         type: string
@@ -79,8 +78,8 @@ jobs:
     steps:
       # This step is needed if there is a GitHub App used for authentication to bypass the protected branch rule
       - name: "Prepare app token"
+        id: app-token
         uses: actions/create-github-app-token@v1
-      # id: app-token
         with:
           app-id: ${{ vars.GH_BUMP_VERSION_APP_ID }}
           private-key: ${{ secrets.GH_BUMP_VERSION_APP_KEY }}
@@ -129,7 +128,6 @@ jobs:
     uses: netcracker/qubership-workflow-hub/.github/workflows/docker-publish.yml@v1.0.3
     with:
       ref: "v${{ needs.deploy.outputs.release-version }}"
-      artifact-id: ${{ needs.update-pom-version.outputs.artifact_id }}
       download-artifact: true
 
   github-release:

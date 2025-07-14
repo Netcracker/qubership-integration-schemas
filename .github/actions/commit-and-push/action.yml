@@ -14,6 +14,9 @@ inputs:
     description: "[ci skip] The commit message. Defaults to `Automated commit`."
     required: false
     default: "Automated commit"
+  branch_name:
+    description: "The branch to push to. Defaults to current branch."
+    required: false
 
 runs:
   using: "composite"
@@ -37,7 +40,11 @@ runs:
       shell: bash
       run: |
         set -x
-        git push origin HEAD
+        if [ -n "${{ inputs.branch_name }}" ]; then
+          git push origin HEAD:${{ inputs.branch_name }}
+        else
+          git push origin HEAD
+        fi
 
 branding:
   icon: "git-commit"
