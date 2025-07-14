@@ -3,20 +3,6 @@ name: Parallel Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to release (e.g., 1.0.0)'
-        required: true
-        type: string
-      scope:
-        description: 'NPM scope for the package'
-        required: false
-        type: string
-        default: '@andyroode'
-      dist-tag:
-        description: 'NPM distribution tag'
-        required: false
-        type: string
-        default: 'latest'
       maven-release:
         description: 'Run Maven release'
         required: false
@@ -27,7 +13,8 @@ on:
         required: false
         type: boolean
         default: true
-      version-type:
+      # Maven specific inputs
+      maven-version-type:
         description: 'Maven version type'
         type: choice
         options:
@@ -44,6 +31,21 @@ on:
           - 'central'
         required: false
         default: 'central'
+      # NPM specific inputs
+      npm-version:
+        description: 'NPM version to release (e.g., 1.0.0)'
+        required: false
+        type: string
+      npm-scope:
+        description: 'NPM scope for the package'
+        required: false
+        type: string
+        default: '@amdyroode'
+      npm-dist-tag:
+        description: 'NPM distribution tag'
+        required: false
+        type: string
+        default: 'latest'
 
 permissions:
   contents: write
@@ -54,15 +56,15 @@ jobs:
     if: ${{ inputs.maven-release && inputs.maven-release != 'false' }}
     uses: ./.github/workflows/maven-release-v2.yaml
     with:
-      version-type: ${{ inputs.version-type }}
+      version-type: ${{ inputs.maven-version-type }}
       profile: ${{ inputs.maven-profile }}
 
   npm-publish:
     if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
     uses: ./.github/workflows/npm-publish.yml
     with:
-      version: ${{ inputs.version }}
-      scope: ${{ inputs.scope }}
-      dist-tag: ${{ inputs.dist-tag }}
+      version: ${{ inputs.npm-version }}
+      scope: ${{ inputs.npm-scope }}
+      dist-tag: ${{ inputs.npm-dist-tag }}
       branch_name: main
     secrets: inherit 
