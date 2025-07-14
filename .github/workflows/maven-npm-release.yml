@@ -42,7 +42,7 @@ on:
         description: 'NPM scope for the package'
         required: false
         type: string
-        default: '@amdyroode'
+        default: '@andyroode'
       npm-dist-tag:
         description: 'NPM distribution tag'
         required: false
