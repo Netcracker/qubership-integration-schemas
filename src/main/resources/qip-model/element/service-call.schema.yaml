@@ -156,7 +156,9 @@ definitions:
         title: None
         properties:
           type:
-            const: "none"
+            anyOf:
+              - const: "none"
+              - not: { }
   ValidationFailureHandler:
     type: object
     properties:
