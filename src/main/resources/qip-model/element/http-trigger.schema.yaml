@@ -103,6 +103,7 @@ definitions:
         enum:
           - RBAC
           - ABAC
+          - NONE
     required:
       - accessControlType
     if:
@@ -117,13 +118,18 @@ definitions:
           items:
             type: string
     else: # abac
-      properties:
-        abacResource:
-          type: string
-          title: Resource
-          description: ABAC resource, usually the same as the trigger URI.
-      required:
-        - abacResource
+      if:
+        properties:
+          accessControlType:
+            const: ABAC
+        then:
+          properties:
+            abacResource:
+              type: string
+              title: Resource
+              description: ABAC resource, usually the same as the trigger URI.
+          required:
+            - abacResource
   CustomEndpoint:
     title: Custom Endpoint
     type: object
