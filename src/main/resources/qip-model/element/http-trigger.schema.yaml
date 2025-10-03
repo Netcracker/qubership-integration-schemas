@@ -18,8 +18,8 @@ properties:
       - $ref: "http://qubership.org/schemas/product/qip/element/properties/idempotency.schema.yaml"
       - $ref: "#/definitions/AccessControlProperties"
       - oneOf:
-        - $ref: "#/definitions/CustomEndpoint"
-        - $ref: "#/definitions/ImplementedServiceEndpoint"
+          - $ref: "#/definitions/CustomEndpoint"
+          - $ref: "#/definitions/ImplementedServiceEndpoint"
       - $ref: "#/definitions/ValidationFailureHandler"
       - $ref: "#/definitions/ChainFailureHandler"
     properties:
@@ -103,7 +103,6 @@ definitions:
         enum:
           - RBAC
           - ABAC
-          - NONE
     required:
       - accessControlType
     if:
@@ -117,19 +116,40 @@ definitions:
           type: array
           items:
             type: string
-    else: # abac
+    else: # abac or none
       if:
         properties:
           accessControlType:
             const: ABAC
         then:
           properties:
-            abacResource:
-              type: string
-              title: Resource
-              description: ABAC resource, usually the same as the trigger URI.
+            abacParameters:
+              resourceType:
+                type: string
+                title: Resource Type
+                description: ABAC resource type, by default set as CHAIN.
+              operation:
+                type: string
+                title: Operation
+                description: ABAC operation, by default set as ALL.
+              resourceDataType:
+                type: string
+                title: Resource Data Type
+                description: ABAC Resource Data Type, could be String or Map.
+              resourceString:
+                type: string
+                title: Resource String
+                description: ABAC resource string, usually the same as the trigger URI.
+              resourceMap:
+                type: object
+                title: Resource Map
+                description: ABAC resource map.
           required:
-            - abacResource
+            - abacParameters
+            - resourceType
+            - operation
+            - resourceDataType
+            - resourceString
   CustomEndpoint:
     title: Custom Endpoint
     type: object
