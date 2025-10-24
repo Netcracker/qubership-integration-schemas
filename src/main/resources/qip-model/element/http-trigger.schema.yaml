@@ -103,6 +103,7 @@ definitions:
         enum:
           - RBAC
           - ABAC
+          - NONE
     required:
       - accessControlType
     if:
