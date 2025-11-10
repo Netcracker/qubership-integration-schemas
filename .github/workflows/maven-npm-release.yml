@@ -78,12 +78,12 @@ jobs:
       dry-run: ${{ inputs.maven-dry-run }}
     secrets: inherit
 
-  npm-publish:
-    if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
-    uses: Netcracker/qubership-workflow-hub/.github/workflows/re-npm-publish.yml@main
-    with:
-      version: ${{ inputs.release-version }}
-      scope: ${{ inputs.npm-scope }}
-      dist-tag: ${{ inputs.npm-dist-tag }}
-      ref: ${{ github.ref_name }}
-    secrets: inherit
+  # npm-publish:
+  #   if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
+  #   uses: Netcracker/qubership-workflow-hub/.github/workflows/re-npm-publish.yml@main
+  #   with:
+  #     version: ${{ inputs.release-version }}
+  #     scope: ${{ inputs.npm-scope }}
+  #     dist-tag: ${{ inputs.npm-dist-tag }}
+  #     ref: ${{ github.ref_name }}
+  #   secrets: inherit
