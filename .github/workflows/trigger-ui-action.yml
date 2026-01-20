@@ -1,0 +1,26 @@
+name: trigger-ui-action.yml
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to bump'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  trigger-event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger schemas version update
+        uses: netcracker/qubership-workflow-hub/actions/custom-event@main
+        with:
+          event-type: "update version"
+          client-payload: '{"version": "${{ inputs.version }}"}'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo: "qubership-integration-ui"
+          owner: "Netcracker"
