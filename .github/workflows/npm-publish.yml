@@ -62,6 +62,11 @@
           required: false
           type: string
           default: 'latest'
+        only-update-schemas:
+          description: 'Only update schemas dependency, no publish'
+          required: false
+          type: boolean
+          default: false
 
   permissions:
     contents: write
@@ -69,6 +74,7 @@
 
   jobs:
     npm-publish:
+      if: inputs.only-update-schemas == false
       uses: Netcracker/qubership-workflow-hub/.github/workflows/re-npm-publish.yml@8af13ac7ea017b87a8501e9b119a5c86c532a5b2
       with:
         version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
@@ -80,3 +86,25 @@
         dist-tag: ${{ github.event_name == 'workflow_dispatch' && inputs.npm-dist-tag || 'latest' }}
         ref: ${{ github.ref_name }}
       secrets: inherit
+
+    update-schemas-only:
+      if: inputs.only-update-schemas == true
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout test branch
+          uses: actions/checkout@v4
+          with:
+            ref: new-actions-assumption
+
+        - name: Update schemas version
+          run: |
+            npm pkg set dependencies.@netcracker/qip-schemas=${{ inputs.version }}
+
+        - name: Commit and push
+          run: |
+            git config user.name "qubership-actions[bot]"
+            git config user.email "qubership-actions[bot]@users.noreply.github.com"
+            git add package.json package-lock.json || true
+            git commit -m "chore: bump qip-schemas to ${{ inputs.version }}"
+            git push origin new-actions-assumption
