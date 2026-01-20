@@ -87,24 +87,15 @@
         ref: ${{ github.ref_name }}
       secrets: inherit
 
-    update-schemas-only:
+    trigger-event:
       if: inputs.only-update-schemas == true
       runs-on: ubuntu-latest
-
       steps:
-        - name: Checkout test branch
-          uses: actions/checkout@v4
+        - name: Trigger schemas version update
+          uses: netcracker/qubership-workflow-hub/actions/custom-event@main
           with:
-            ref: new-actions-assumption
-
-        - name: Update schemas version
-          run: |
-            npm pkg set dependencies.@netcracker/qip-schemas=${{ inputs.version }}
-
-        - name: Commit and push
-          run: |
-            git config user.name "qubership-actions[bot]"
-            git config user.email "qubership-actions[bot]@users.noreply.github.com"
-            git add package.json package-lock.json || true
-            git commit -m "chore: bump qip-schemas to ${{ inputs.version }}"
-            git push origin new-actions-assumption
+            event-type: "schemas-update"
+            client-payload: '{"version": "${{ inputs.version }}"}'
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            repo: "qubership-integration-ui"
+            owner: "Netcracker"
