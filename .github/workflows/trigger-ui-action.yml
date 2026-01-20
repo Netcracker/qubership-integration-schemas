@@ -19,7 +19,7 @@ jobs:
       - name: Trigger schemas version update
         uses: netcracker/qubership-workflow-hub/actions/custom-event@main
         with:
-          event-type: "update version"
+          event-type: "schemas-update"
           client-payload: '{"version": "${{ inputs.version }}"}'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repo: "qubership-integration-ui"
