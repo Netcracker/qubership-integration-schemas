@@ -1,4 +1,4 @@
-name: trigger-ui-action.yml
+name: Update schemas version in UI
 
 on:
   workflow_dispatch:
