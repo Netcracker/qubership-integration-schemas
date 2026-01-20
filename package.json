@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^14.1.1",
+    "@netcracker/qip-schemas": "0.2.15",
     "@types/gulp": "^4.0.17",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.1.0",
