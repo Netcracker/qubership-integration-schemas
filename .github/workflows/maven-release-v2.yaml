@@ -70,13 +70,11 @@ on:
     inputs:
       version:
         required: true
-        default: '1.0.0'
         type: string
         description: 'Release version (e.g., 1.0.0)'
       version-type:
         description: 'Version type to release'
         type: string
-        required: true
         default: 'patch'
       profile:
         description: 'Maven profile to use'
