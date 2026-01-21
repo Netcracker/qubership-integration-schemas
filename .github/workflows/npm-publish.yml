@@ -41,14 +41,17 @@
           type: string
           default: '@netcracker'
         node-version:
+          description: 'Node js vesion'
           required: false
           type: string
           default: "22.x"
         registry-url:
+          description: 'Registry version'
           required: false
           type: string
           default: "https://npm.pkg.github.com"
         update-nc-dependency:
+          description: 'Update nc dependency'
           required: false
           type: boolean
           default: false
@@ -62,11 +65,11 @@
           required: false
           type: string
           default: 'latest'
-        only-update-schemas:
-          description: 'Only update schemas dependency, no publish'
+        update-schemas:
+          description: 'Update schemas version in UI'
           required: false
           type: boolean
-          default: false
+          default: true
 
   permissions:
     contents: write
@@ -87,12 +90,12 @@
         ref: ${{ github.ref_name }}
       secrets: inherit
 
-    trigger-event:
+    update-version-in-ui:
       if: inputs.only-update-schemas == true
       runs-on: ubuntu-latest
       steps:
         - name: Trigger schemas version update
-          uses: netcracker/qubership-workflow-hub/actions/custom-event@main
+          uses: netcracker/qubership-workflow-hub/actions/custom-event@c1a5c8c2d9c2a79f548134db1d095f36ee0f28e7 #v2.0.7
           with:
             event-type: "schemas-update"
             client-payload: '{"version": "${{ inputs.version }}"}'
