@@ -77,7 +77,6 @@
 
   jobs:
     npm-publish:
-      if: inputs.only-update-schemas == false
       uses: Netcracker/qubership-workflow-hub/.github/workflows/re-npm-publish.yml@8af13ac7ea017b87a8501e9b119a5c86c532a5b2
       with:
         version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
@@ -88,10 +87,11 @@
         dry-run: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run) }}
         dist-tag: ${{ github.event_name == 'workflow_dispatch' && inputs.npm-dist-tag || 'latest' }}
         ref: ${{ github.ref_name }}
-      secrets: inherit
+      secrets:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     update-version-in-ui:
-      if: inputs.only-update-schemas == true
+      if: inputs.update-schemas == true
       runs-on: ubuntu-latest
       steps:
         - name: Trigger schemas version update

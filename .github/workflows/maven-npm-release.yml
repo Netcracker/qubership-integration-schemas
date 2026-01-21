@@ -38,16 +38,28 @@ on:
         required: false
         type: string
         default: '21'
-      maven-build-docker:
-        description: 'Build Docker image for Maven project'
+      build-docker:
+        description: 'Build Docker image'
         required: false
-        type: boolean
         default: false
-      maven-dry-run:
-        description: 'Maven dry run'
+        type: boolean
+      version-type:
+        description: 'Version type to release'
+        type: choice
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
+        required: true
+        default: 'patch'
+      profile:
+        description: 'Maven profile to use'
+        type: choice
+        options:
+          - 'github'
+          - 'central'
         required: false
-        type: boolean
-        default: false
+        default: 'central'
       # =================================
       # NPM CONFIGURATION
       # =================================
@@ -69,14 +81,15 @@ permissions:
 jobs:
   maven-release:
     if: ${{ inputs.maven-release && inputs.maven-release != 'false' }}
-    uses: ./.github/workflows/maven-release.yaml
+    uses: ./.github/workflows/maven-release-v2.yaml
     with:
       version: ${{ inputs.release-version }}
       profile: ${{ inputs.maven-profile }}
-      java-version: ${{ inputs.maven-java-version }}
-      build-docker: ${{ inputs.maven-build-docker }}
-      dry-run: ${{ inputs.maven-dry-run }}
-    secrets: inherit
+      build-docker: ${{ inputs.build-docker }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
 
   npm-publish:
     if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
@@ -86,4 +99,5 @@ jobs:
       scope: ${{ inputs.npm-scope }}
       dist-tag: ${{ inputs.npm-dist-tag }}
       ref: ${{ github.ref_name }}
-    secrets: inherit
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
