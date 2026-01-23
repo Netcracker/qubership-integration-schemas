@@ -50,11 +50,6 @@ on:
           - 'central'
         required: false
         default: 'central'
-      build-docker:
-        description: 'Build Docker image'
-        required: false
-        default: true
-        type: boolean
       create-github-release:
         description: 'Create release'
         required: false

@@ -82,7 +82,6 @@ jobs:
     with:
       version: ${{ inputs.release-version }}
       profile: ${{ inputs.maven-profile }}
-      build-docker: ${{ inputs.build-docker }}
 
   npm-publish:
     if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
