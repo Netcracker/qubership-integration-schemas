@@ -81,6 +81,17 @@ on:
         required: false
         default: true
         type: boolean
+    secrets:
+      GITHUB_AUTH_TOKEN:
+        required: true
+      MAVEN_USER:
+        required: true
+      MAVEN_PASSWORD:
+        required: true
+      MAVEN_GPG_PRIVATE_KEY:
+        required: true
+      MAVEN_GPG_PASSPHRASE:
+        required: true
 
 permissions: {}
 
@@ -105,7 +116,7 @@ jobs:
           create-tag: 'false'
           check-tag: 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
   build-and-publish:
     needs: check-tag
@@ -123,9 +134,9 @@ jobs:
           maven-args: ${{ inputs.mvn-args }}
           profile: ${{ inputs.profile }}
           server-id: ${{ inputs.profile }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_AUTH_TOKEN }}
           maven-user: ${{ inputs.profile == 'github' && github.actor || secrets.MAVEN_USER }}
-          maven-password: ${{ inputs.profile == 'github' && secrets.GITHUB_TOKEN || secrets.MAVEN_PASSWORD }}
+          maven-password: ${{ inputs.profile == 'github' && secrets.GITHUB_AUTH_TOKEN || secrets.MAVEN_PASSWORD }}
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           dry-run: 'false'
@@ -158,4 +169,4 @@ jobs:
           tag: 'v${{ inputs.version }}'
           version: 'v${{ inputs.version }}'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}

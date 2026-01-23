@@ -111,6 +111,11 @@ on:
         required: false
         type: boolean
         default: true
+    secrets:
+      GITHUB_AUTH_TOKEN:
+        required: true
+      GH_ACCESS_TOKEN:
+        required: true
 
 permissions:
   contents: read
@@ -131,7 +136,7 @@ jobs:
       dist-tag: ${{ inputs.npm-dist-tag || 'latest' }}
       ref: ${{ github.ref_name }}
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
   update-version-in-ui:
     if: inputs.update-ui == true
