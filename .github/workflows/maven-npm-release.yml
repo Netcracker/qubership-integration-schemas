@@ -47,14 +47,6 @@ on:
           - 'patch'
         required: true
         default: 'patch'
-      profile:
-        description: 'Maven profile to use'
-        type: choice
-        options:
-          - 'github'
-          - 'central'
-        required: false
-        default: 'central'
       # =================================
       # NPM CONFIGURATION
       # =================================

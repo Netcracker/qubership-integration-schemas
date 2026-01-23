@@ -137,6 +137,7 @@ jobs:
 
   update-version-in-ui:
     if: inputs.update-ui == true
+    needs: npm-publish
     runs-on: ubuntu-latest
     steps:
       - name: Trigger UI action
