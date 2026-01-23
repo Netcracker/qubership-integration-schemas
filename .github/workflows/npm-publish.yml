@@ -33,11 +33,52 @@ on:
     inputs:
       version:
         description: 'Release version for NPM (e.g., 1.0.0)'
-        required: false
+        required: true
         type: string
       scope:
         description: 'NPM scope for the package'
         required: false
+        type: string
+        default: '@netcracker'
+      node-version:
+        description: 'Node js vesion'
+        required: false
+        type: string
+        default: "22.x"
+      registry-url:
+        description: 'Registry version'
+        required: false
+        type: string
+        default: "https://npm.pkg.github.com"
+      update-nc-dependency:
+        description: 'Update nc dependency'
+        required: false
+        type: boolean
+        default: false
+      dry-run:
+        description: 'Run in dry-run mode (no actual publishing)'
+        required: false
+        type: boolean
+        default: false
+      npm-dist-tag:
+        description: 'NPM distribution tag'
+        required: false
+        type: string
+        default: 'latest'
+      update-ui:
+        description: 'Update schemas version in UI'
+        required: false
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release version for NPM (e.g., 1.0.0)'
+        required: false
+        type: string
+      scope:
+        description: 'NPM scope for the package'
+        required: true
         type: string
         default: '@netcracker'
       node-version:
@@ -81,13 +122,13 @@ jobs:
       contents: write
       packages: write
     with:
-      version: ${{ github.event_name == 'workflow_dispatch' && inputs.version || '' }}
-      scope: ${{ github.event_name == 'workflow_dispatch' && inputs.scope || '@netcracker' }}
-      node-version: ${{ github.event_name == 'workflow_dispatch' && inputs.node-version || '22.x' }}
-      registry-url: ${{ github.event_name == 'workflow_dispatch' && inputs.registry-url || 'https://npm.pkg.github.com' }}
-      update-nc-dependency: ${{ github.event_name == 'workflow_dispatch' && inputs.update-nc-dependency || false }}
-      dry-run: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run) }}
-      dist-tag: ${{ github.event_name == 'workflow_dispatch' && inputs.npm-dist-tag || 'latest' }}
+      version: ${{ inputs.version || '' }}
+      scope: ${{ inputs.scope || '@netcracker' }}
+      node-version: ${{ inputs.node-version || '22.x' }}
+      registry-url: ${{ inputs.registry-url || 'https://npm.pkg.github.com' }}
+      update-nc-dependency: ${{ inputs.update-nc-dependency || false }}
+      dry-run: ${{ inputs.dry-run }}
+      dist-tag: ${{ inputs.npm-dist-tag || 'latest' }}
       ref: ${{ github.ref_name }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

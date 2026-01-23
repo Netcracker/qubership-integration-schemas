@@ -81,27 +81,11 @@ on:
         type: string
         required: false
         default: 'central'
-      build-docker:
-        description: 'Build Docker image'
-        required: false
-        default: true
-        type: boolean
       create-github-release:
         description: 'Create release'
         required: false
         default: true
         type: boolean
-    secrets:
-      GITHUB_TOKEN:
-        required: true
-      MAVEN_USER:
-        required: false
-      MAVEN_PASSWORD:
-        required: false
-      MAVEN_GPG_PRIVATE_KEY:
-        required: false
-      MAVEN_GPG_PASSPHRASE:
-        required: false
 
 permissions: {}
 
@@ -138,7 +122,7 @@ jobs:
       - name: "Build and Publish"
         uses: netcracker/qubership-workflow-hub/actions/maven-release@c1a5c8c2d9c2a79f548134db1d095f36ee0f28e7 # v2.0.7
         with:
-          version-type: ${{ github.event.inputs.version-type }}
+          version-type: ${{ inputs.version-type || github.event.inputs.version-type }}
           ref: ${{ github.ref }}
           module: ${{ github.event.repository.name }}
           maven-args: ${{ inputs.mvn-args }}
@@ -155,22 +139,6 @@ jobs:
         with:
           name: app-jar
           path: ${{ github.event.repository.name }}/**/target/*-exec.jar
-  publish-image:
-    if: ${{ github.event.inputs.build-docker == 'true' }}
-    needs: build-and-publish
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    steps:
-      - name: "Docker Build"
-        id: docker_build
-        uses: netcracker/qubership-workflow-hub/actions/docker-action@c1a5c8c2d9c2a79f548134db1d095f36ee0f28e7 # v2.0.7
-        with:
-          ref: ${{ github.ref }}
-          download-artifact: true
-          download-artifact-name: app-jar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-release:
     if: ${{ github.event.inputs.create-github-release == 'true' }}

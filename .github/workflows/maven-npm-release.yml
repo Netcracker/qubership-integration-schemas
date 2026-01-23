@@ -10,7 +10,7 @@ on:
       # =================================
       release-version:
         description: 'Release version for both Maven and NPM (e.g., 1.0.0)'
-        required: false
+        required: true
         type: string
       maven-release:
         description: 'Run Maven release'
@@ -97,14 +97,13 @@ jobs:
 
   npm-publish:
     if: ${{ inputs.npm-publish && inputs.npm-publish != 'false' }}
-    uses: Netcracker/qubership-workflow-hub/.github/workflows/re-npm-publish.yml@c1a5c8c2d9c2a79f548134db1d095f36ee0f28e7 # v2.0.7
+    uses: ./.github/workflows/npm-publish.yml
     permissions:
       contents: write
       packages: write
     with:
       version: ${{ inputs.release-version }}
       scope: ${{ inputs.npm-scope }}
-      dist-tag: ${{ inputs.npm-dist-tag }}
-      ref: ${{ github.ref_name }}
+      npm-dist-tag: ${{ inputs.npm-dist-tag }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
