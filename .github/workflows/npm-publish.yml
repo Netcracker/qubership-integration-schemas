@@ -112,8 +112,6 @@ on:
         type: boolean
         default: true
     secrets:
-      GITHUB_AUTH_TOKEN:
-        required: true
       GH_ACCESS_TOKEN:
         required: true
 
@@ -135,8 +133,7 @@ jobs:
       dry-run: ${{ inputs.dry-run }}
       dist-tag: ${{ inputs.npm-dist-tag || 'latest' }}
       ref: ${{ github.ref_name }}
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
+    secrets: inherit
 
   update-version-in-ui:
     if: inputs.update-ui == true
