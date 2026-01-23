@@ -26,7 +26,7 @@ definitions:
     properties:
       enabled:
         type: boolean
-        title: Enable idempotency
+        title: Enabled
         default: false
       keyExpiry:
         allOf:
@@ -40,10 +40,21 @@ definitions:
         type: string
         title: Key expression
       actionOnDuplicate:
-        enum:
-          - ignore
-          - throw-exception
-          - execute-subchain
+        type: string
+        oneOf: [
+          {
+            "const": "ignore",
+            "title": "Ignore"
+          },
+          {
+            "const": "throw-exception",
+            "title": "Throw exception"
+          },
+          {
+            "const": "execute-subchain",
+            "title": "Execute subchain"
+          }
+        ]
         title: Action on duplicate message
         default: ignore
     if:
