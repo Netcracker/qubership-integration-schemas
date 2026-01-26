@@ -84,7 +84,7 @@ definitions:
       chainCallTimeout:
         allOf:
           - $ref: "http://qubership.org/schemas/product/qip/element/properties/integer-or-variable-placeholder.schema.yaml"
-        title: Timeout (ms)
+        title: Chain call timeout (ms)
         default: 30000
     required:
       - triggerElementId
