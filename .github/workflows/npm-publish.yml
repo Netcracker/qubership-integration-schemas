@@ -25,7 +25,7 @@
 
 name: Publish NPM package
 
-run-name: NPM Package${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry-run)) && ' - Test' || ' - Publish' }}${{ (github.event_name == 'workflow_dispatch' && !inputs.dry-run && inputs.version) && format(' {0}', inputs.version) || '' }}
+run-name: NPM Package${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch')) && ' - Test' || ' - Publish' }}${{ (github.event_name == 'workflow_dispatch' && inputs.version) && format(' {0}', inputs.version) || '' }}
 
 on:
   workflow_dispatch:
@@ -51,11 +51,6 @@ on:
         default: "https://npm.pkg.github.com"
       update-nc-dependency:
         description: "Update nc dependency"
-        required: false
-        type: boolean
-        default: false
-      dry-run:
-        description: "Run in dry-run mode (no actual publishing)"
         required: false
         type: boolean
         default: false
@@ -94,11 +89,6 @@ on:
         required: false
         type: boolean
         default: false
-      dry-run:
-        description: "Run in dry-run mode (no actual publishing)"
-        required: false
-        type: boolean
-        default: false
       npm-dist-tag:
         description: "NPM distribution tag"
         required: false
@@ -128,7 +118,6 @@ jobs:
       node-version: ${{ inputs.node-version || '22.x' }}
       registry-url: ${{ inputs.registry-url || 'https://npm.pkg.github.com' }}
       update-nc-dependency: ${{ inputs.update-nc-dependency || false }}
-      dry-run: ${{ inputs.dry-run }}
       dist-tag: ${{ inputs.npm-dist-tag || 'latest' }}
       ref: ${{ github.ref_name }}
 
