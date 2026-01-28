@@ -6,28 +6,32 @@ title: Idempotency properties
 properties:
   idempotency:
     type: object
-    allOf:
-      - $ref: "#/definitions/CommonIdempotencyProperties"
-    if:
-      properties:
-        enabled:
-          const: true
-        actionOnDuplicate:
-          const: execute-subchain
-      required:
-        - enabled
-        - actionOnDuplicate
-    then:
-      allOf:
-        - $ref: "#/definitions/ExecuteSubchainProperties"
-definitions:
-  CommonIdempotencyProperties:
-    type: object
     properties:
       enabled:
         type: boolean
         title: Enabled
         default: false
+    allOf:
+      - if:
+          properties:
+            enabled:
+              const: true
+        then:
+          allOf:
+            - $ref: "#/definitions/CommonIdempotencyProperties"
+      - if:
+          properties:
+            actionOnDuplicate:
+              const: execute-subchain
+          required:
+            - actionOnDuplicate
+        then:
+          allOf:
+            - $ref: "#/definitions/ExecuteSubchainProperties"
+definitions:
+  CommonIdempotencyProperties:
+    type: object
+    properties:
       keyExpiry:
         allOf:
           - $ref: "http://qubership.org/schemas/product/qip/element/properties/integer-or-variable-placeholder.schema.yaml"
@@ -57,14 +61,10 @@ definitions:
         ]
         title: Action on duplicate message
         default: ignore
-    if:
-      properties:
-        enabled:
-          const: true
-    then:
-      required:
-        - contextExpression
-        - keyExpression
+    required:
+      - contextExpression
+      - keyExpression
+      - actionOnDuplicate
   ExecuteSubchainProperties:
     type: object
     properties:
