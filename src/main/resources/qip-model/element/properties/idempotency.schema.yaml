@@ -61,12 +61,11 @@ definitions:
             "title": "Execute subchain"
           }
         ]
-        title: Action on duplicate message
+        title: Action on duplicate
         default: ignore
     required:
       - contextExpression
       - keyExpression
-      - actionOnDuplicate
   ExecuteSubchainProperties:
     type: object
     properties:
