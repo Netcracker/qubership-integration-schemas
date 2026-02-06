@@ -119,13 +119,13 @@ jobs:
       scope: ${{ inputs.scope || '@netcracker' }}
       node-version: ${{ inputs.node-version || '22.x' }}
       registry-url: ${{ inputs.registry-url || 'https://npm.pkg.github.com' }}
-      update-nc-dependency: ${{ inputs.update-nc-dependency || false }}
+      update-nc-dependency: ${{ inputs.update-nc-dependency }}
       dist-tag: ${{ inputs.npm-dist-tag || 'latest' }}
-      ref: ${{ github.ref_name }}
-      dry-run: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
+      ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+      dry-run: ${{ github.event_name == 'pull_request' }}
 
   update-version-in-ui:
-    if: ${{ github.event_name != 'pull_request' && inputs.update-ui == true }}
+    if: github.event_name == 'workflow_dispatch' && inputs.update-ui == 'true'
     needs: npm-publish
     runs-on: ubuntu-latest
     steps:
