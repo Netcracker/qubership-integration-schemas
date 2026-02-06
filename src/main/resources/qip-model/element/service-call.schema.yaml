@@ -145,9 +145,7 @@ definitions:
         title: None
         properties:
           type:
-            anyOf:
-              - const: "none"
-              - not: {}
+            const: "none"
       - type: object
         title: Mapper
         allOf:
