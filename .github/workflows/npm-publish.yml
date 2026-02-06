@@ -125,7 +125,7 @@ jobs:
       dry-run: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
 
   update-version-in-ui:
-    if: inputs.update-ui == true && github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && inputs.update-ui == true
     needs: npm-publish
     runs-on: ubuntu-latest
     steps:
