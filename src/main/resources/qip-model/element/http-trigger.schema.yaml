@@ -132,6 +132,12 @@ definitions:
         type: string
         title: Operation name
     required:
+      - integrationOperationId
+      - integrationSpecificationGroupId
+      - integrationSpecificationId
+      - integrationSystemId
+      - systemType
       - integrationOperationPath
+      - integrationOperationMethod
 required:
   - type
