@@ -103,7 +103,7 @@ definitions:
       httpMethodRestrict:
         type: string
         title: HTTP Methods
-        pattern: "^(POST|GET|PUT|DELETE|PATCH|HEAD|OPTIONS)(,(POST|GET|PUT|DELETE|PATCH|HEAD|OPTIONS))*$"
+        pattern: "^$|^(POST|GET|PUT|DELETE|PATCH|HEAD|OPTIONS)(,(POST|GET|PUT|DELETE|PATCH|HEAD|OPTIONS))*$"
     required:
       - contextPath
   ImplementedServiceEndpoint:
