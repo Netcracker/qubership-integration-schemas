@@ -29,6 +29,9 @@ properties:
         type: array
         items:
           $ref: "#/definitions/SpecificationSource"
+      apiId:
+        type: string
+        title: API instance Id
     required:
       - deprecated
       - version
