@@ -36,16 +36,6 @@ properties:
         type: string
         title: Output schema
         description: Optional JSON Schema defining expected output structure
-      annotations:
-        $ref: "#/definitions/McpToolAnnotations"
-    required:
-      - name
-      - description
-      - inputSchema
-definitions:
-  McpToolAnnotations:
-    type: object
-    properties:
       readOnly:
         type: boolean
         default: false
@@ -71,5 +61,9 @@ definitions:
         default: false
         title: Tool needs local resources or execution
         description: A specialized hint (common in Azure MCP) indicating the tool needs local resources or execution.
+    required:
+      - name
+      - description
+      - inputSchema
 required:
   - type
