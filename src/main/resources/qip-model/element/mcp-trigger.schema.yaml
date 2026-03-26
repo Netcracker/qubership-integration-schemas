@@ -19,7 +19,7 @@ properties:
         type: string
         title: Identifier
         description: Unique identifier for the tool
-        pattern: "^[\.\-_0-9a-zA-Z]{1,128}$"
+        pattern: "^[\\.\\-_0-9a-zA-Z]{1,128}$"
       title:
         type: string
         title: Title
