@@ -32,6 +32,7 @@ properties:
         type: string
         title: Input schema
         description: JSON Schema defining expected parameters
+        default: '{ "type": "object", "additionalProperties": false }'
       outputSchema:
         type: string
         title: Output schema
