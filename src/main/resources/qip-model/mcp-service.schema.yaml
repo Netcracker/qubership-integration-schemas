@@ -19,6 +19,10 @@ definitions:
   MCPServiceProperties:
     type: object
     properties:
+      identifier:
+        type: string
+        title: MCP server identifier
+        description: MCP server identifier
       instructions:
         type: string
         title: Server instructions
@@ -26,3 +30,5 @@ definitions:
           Server instructions give the server a way to inject information
           that the LLM should always read in order to understand how to use
           the server—independent of individual prompts, tools, or messages.
+    required:
+      - identifier
