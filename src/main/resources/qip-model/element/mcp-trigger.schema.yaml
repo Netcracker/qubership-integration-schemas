@@ -15,10 +15,14 @@ properties:
     allOf:
       - $ref: "http://qubership.org/schemas/product/qip/element/properties/idempotency.schema.yaml"
     properties:
-      mcpServiceId:
-        type: string
-        title: MCP service
-        description: MCP service
+      mcpServiceIds:
+        type: array
+        items:
+          type: string
+          title: MCP service
+          description: MCP service
+        title: MCP services
+        description: MCP services
       name:
         type: string
         title: Identifier
@@ -62,7 +66,7 @@ properties:
         title: Tool may interact with external entities beyond its local environment
         description: Defines if the tool interacts with an unpredictable external environment (like a web search) or a closed, well-defined system.
     required:
-      - mcpServiceId
+      - mcpServiceIds
       - name
       - description
       - inputSchema
