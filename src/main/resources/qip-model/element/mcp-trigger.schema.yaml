@@ -23,6 +23,7 @@ properties:
           description: MCP service
         title: MCP services
         description: MCP services
+        minItems: 1
       name:
         type: string
         title: Identifier
